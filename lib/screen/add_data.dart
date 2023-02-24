@@ -42,7 +42,7 @@ class AddDataScreen extends GetView<AddDataController> {
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              Row(
+              /*Row(
                 children: [
                   Expanded(
                     child: TextFormField(
@@ -79,9 +79,9 @@ class AddDataScreen extends GetView<AddDataController> {
                     },
                   ))
                 ],
-              ),
+              ),*/
               const SizedBox(height: 20),
-              Row(
+              /*Row(
                 children: [
                   Expanded(
                       child: CommonTextFormField(
@@ -113,7 +113,7 @@ class AddDataScreen extends GetView<AddDataController> {
                     ),
                   )),
                 ],
-              ),
+              ),*/
               const SizedBox(height: 20),
               SizedBox(
                 width: 340,

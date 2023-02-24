@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:sync_data/binding/binding.dart';
 import 'package:sync_data/screen/home_screen.dart';
+import 'package:sync_data/screen/screen.dart';
 
 import 'routs.dart';
 
@@ -22,8 +23,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: HomeScreen.pageId,
-      initialBinding: HomeBinding(),
+      initialRoute: SplashScreen.pageId,
+      initialBinding: SplashBinding(),
       getPages: appPage,
     );
   }

@@ -1,8 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:sync_data/screen/add_data.dart';
-import 'package:sync_data/screen/home_screen.dart';
-
 import 'binding/binding.dart';
+import 'screen/screen.dart';
 
 final List<GetPage> appPage = [
   GetPage(
@@ -11,7 +9,18 @@ final List<GetPage> appPage = [
       binding: HomeBinding()),
   GetPage(
       name: AddDataScreen.pageId,
-      page: ()=>  AddDataScreen(),
-    binding: AddDataBinding()
-  )
+      page: () => AddDataScreen(),
+      binding: AddDataBinding()),
+  GetPage(
+      name: SplashScreen.pageId,
+      page: () => SplashScreen(),
+      binding: SplashBinding()),
+  GetPage(
+      name: LoginScreen.pageId,
+      page: () => LoginScreen(),
+      binding: LoginBinding()),
+  GetPage(
+      name: SignupScreen.pageId,
+      page: () => SignupScreen(),
+      binding: SignupBinding()),
 ];

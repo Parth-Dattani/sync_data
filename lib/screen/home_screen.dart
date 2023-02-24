@@ -33,6 +33,20 @@ class HomeScreen extends GetView<HomeController> {
               },
               icon: const Icon(Icons.download),
             ),
+            IconButton(
+              onPressed: () {
+                print("Data Syncing from Internet");
+                controller.getProductData();
+              },
+              icon: const Icon(Icons.abc),
+            ),
+            IconButton(
+              onPressed: () {
+                print("Data Syncing from Internet");
+                controller.getUserData();
+              },
+              icon: const Icon(Icons.person),
+            ),
           ],
         ),
         body: Obx(
@@ -106,7 +120,7 @@ class HomeScreen extends GetView<HomeController> {
                                 childAspectRatio:
                                     Get.size.width / (Get.size.height / 1.4),
                               ),*/
-                      itemCount: controller.dModel.length,
+                      itemCount: controller.uModel.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(top: 15),
@@ -135,7 +149,7 @@ class HomeScreen extends GetView<HomeController> {
                                           color: Colors.teal,
                                           border: Border.all(width: 2)),
                                       child: Text(
-                                        controller.dModel[index].id.toString(),
+                                        controller.uModel[index].id.toString(),
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w700),
@@ -152,7 +166,7 @@ class HomeScreen extends GetView<HomeController> {
                                             height: 2,
                                           ),
                                           Text(
-                                            controller.dModel[index].firstName
+                                            controller.uModel[index].name
                                                 .toString(),
                                             style: const TextStyle(
                                                 fontSize: 20,
@@ -162,7 +176,7 @@ class HomeScreen extends GetView<HomeController> {
                                             width: 10,
                                           ),
                                           Text(
-                                            controller.dModel[index].lastName
+                                            controller.uModel[index].email
                                                 .toString(),
                                             style: const TextStyle(
                                                 fontSize: 10,
@@ -179,8 +193,7 @@ class HomeScreen extends GetView<HomeController> {
                                             Get.toNamed(AddDataScreen.pageId,
                                                 arguments: {
                                                   "isUpdate": true,
-                                                  "data":
-                                                      controller.dModel[index]
+                                                  "data": controller.uModel[index]
                                                 });
 
                                             // DatabaseHandler().deleteTask(
@@ -199,11 +212,10 @@ class HomeScreen extends GetView<HomeController> {
                                       IconButton(
                                           onPressed: () {
                                             print(
-                                                "Idd:  ${controller.dModel[index].id}");
+                                                "Idd:  ${controller.uModel[index].id}");
                                             //   print(snapshot.data![index].id);
-                                            DatabaseHandler().deleteTask(
-                                                controller.dModel[index].id!
-                                                    .toInt());
+                                            DatabaseHandler().deleteUser(
+                                                controller.uModel[index].id!.toInt());
                                             //     snapshot.data![index]
                                             //         .id!
                                             //         .toInt());

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sync_data/utils/extension.dart';
 import '../Model/model_class.dart';
+import '../Model/user_model.dart';
 
 class AddDataController extends GetxController {
   final myForm = GlobalKey<FormState>();
@@ -13,15 +14,18 @@ class AddDataController extends GetxController {
   final lNameController = TextEditingController();
   RxBool isUpdate = false.obs;
   Rx<DataModel> data = DataModel().obs;
+  Rx<UserModel> userData = UserModel().obs;
   dynamic argumentData = Get.arguments;
 
   @override
   void onInit() {
     isUpdate.value = argumentData['isUpdate'];
     if (isUpdate.value == true) {
-      data.value = Get.arguments['data'];
-      fNameController.text = data.value.firstName.defaultStringValue();
-      lNameController.text = data.value.lastName.defaultStringValue();
+      userData.value = Get.arguments['data'];
+      fNameController.text = userData.value.name.defaultStringValue();
+      fNameController.text = userData.value.email.defaultStringValue();
+      //fNameController.text = data.value.firstName.defaultStringValue();
+      //lNameController.text = data.value.lastName.defaultStringValue();
       print("Show Data ${jsonEncode(data.value)}");
     } else {
       print("ADD");
