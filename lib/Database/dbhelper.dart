@@ -76,7 +76,8 @@ class DatabaseHandler {
             "email INTEGER,"
             "profilepicture TEXT,"
             "location TEXT,"
-            "createdat TEXT)",
+            "createdat TEXT,"
+            "online TEXT)",
         //"CREATE TABLE data(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT NOT NULL,description TEXT NOT NULL, date DateTime DEFAULT (datetime('now', 'localtime')) )",
       );
     }, version: 1);
@@ -148,6 +149,20 @@ class DatabaseHandler {
     var result = await db
         .update("data", task.toJson(), where: 'id= ?', whereArgs: [task.id]);
     return result;
+  }
+
+  Future<int> updateUser(UserModel um) async {
+    final db = await initUserDB();
+    var result = await db
+        .update("users", um.toJson(), where: 'id= ?', whereArgs: [um.id]);
+    return result;
+  }
+
+  Future<int> updateUserStatus(UserModel um) async {
+    final db = await initUserDB();
+    var res = await db.rawUpdate('UPDATE users SET online = "1"  WHERE online=${um.online == "0"}');
+    //var result = await db.update("users", um.toJson(), where: 'id= ?', whereArgs: [um.online == '0']);
+    return res;
   }
 
 

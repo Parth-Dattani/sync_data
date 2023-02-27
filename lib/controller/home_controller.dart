@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:get/get.dart';
 import 'package:sync_data/Model/user_model.dart';
 
@@ -9,6 +10,7 @@ import '../services/remot_services.dart';
 
 class HomeController extends GetxController {
   RxBool connected = false.obs;
+  RxInt online = 0.obs;
 
   RxList<DataModel> dModel = <DataModel>[].obs;
   RxList<ProductModel> pModel = <ProductModel>[].obs;
@@ -20,6 +22,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     getOffData();
+    print("Add data id :${uidFunction()}");
     super.onInit();
   }
 
@@ -41,11 +44,10 @@ class HomeController extends GetxController {
         var data = jsonData['Items'] as List;
         for (var model in data) {
           //if(data != dModel){
-            await DatabaseHandler().add(DataModel.fromJson(model));
+          await DatabaseHandler().add(DataModel.fromJson(model));
           //}
           print("model dfata : ${dModel}");
         }
-
       }
       // DatabaseHandler().add(DataModel(
       //   firstName: jsonData[],
@@ -71,7 +73,6 @@ class HomeController extends GetxController {
           //}
           print("model pfata : ${pModel}");
         }
-
       }
       // DatabaseHandler().add(DataModel(
       //   firstName: jsonData[],
@@ -97,7 +98,6 @@ class HomeController extends GetxController {
           //}
           print("model pfata : ${uModel}");
         }
-
       }
       // DatabaseHandler().add(DataModel(
       //   firstName: jsonData[],
@@ -109,14 +109,31 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> addUserData({id, name, email}) async {
+    var response = await RemoteServices.addUserData(id, name, email);
+    try {
+      if (response.statusCode == 200) {
+        var jsonData = json.decode(response.body);
+        //var data = jsonData as List;
+        print("object : $jsonData");
+      }
+    } catch (e) {
+      print("error post: ${e.toString()}");
+    }
+  }
 
-  // void deleteDat(int id)async{
-  //   DatabaseHandler().deleteTask(
-  //       //dModel[index].firstName.toString(),
-  //       //snapshot.data![index].id!.toInt());
-  //   //setState(() {
-  //     DatabaseHandler().deleteUser(p);
-  //   //});
-  //   getAllTask();
-  // }
+  //genrate unique 6Int Id
+  num uidFunction() {
+    num randomString = Random().nextInt(555654);
+    return randomString;
+  }
+// void deleteDat(int id)async{
+//   DatabaseHandler().deleteTask(
+//       //dModel[index].firstName.toString(),
+//       //snapshot.data![index].id!.toInt());
+//   //setState(() {
+//     DatabaseHandler().deleteUser(p);
+//   //});
+//   getAllTask();
+// }
 }

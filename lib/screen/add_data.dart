@@ -4,6 +4,7 @@ import 'package:sync_data/controller/controller.dart';
 import 'package:sync_data/widgets/common_text_field.dart';
 import '../Database/dbhelper.dart';
 import '../Model/model_class.dart';
+import '../Model/user_model.dart';
 import 'home_screen.dart';
 
 class AddDataScreen extends GetView<AddDataController> {
@@ -27,7 +28,7 @@ class AddDataScreen extends GetView<AddDataController> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Form(
+        child:  Form(
           key: controller.myForm,
           child: Column(
             children: [
@@ -42,13 +43,13 @@ class AddDataScreen extends GetView<AddDataController> {
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              /*Row(
+              Row(
                 children: [
                   Expanded(
                     child: TextFormField(
                       controller: controller.fNameController,
                       decoration: InputDecoration(
-                        hintText: "FirstName",
+                        hintText: "Name",
                         prefixIcon: const Icon(Icons.person,
                             color: Colors.deepPurpleAccent),
                         border: OutlineInputBorder(
@@ -65,55 +66,56 @@ class AddDataScreen extends GetView<AddDataController> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Expanded(
-                      child: CommonTextFormField(
-                    controller: controller.lNameController,
-                    hintText: "LastName",
-                    prefixIcon: const Icon(Icons.person,
-                        color: Colors.deepPurpleAccent),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'please enter last Name';
-                      }
-                      return null;
-                    },
-                  ))
+                  // Expanded(
+                  //     child: CommonTextFormField(
+                  //       controller: controller.lNameController,
+                  //       hintText: "LastName",
+                  //       prefixIcon: const Icon(Icons.person,
+                  //           color: Colors.deepPurpleAccent),
+                  //       validator: (value) {
+                  //         if (value!.isEmpty) {
+                  //           return 'please enter last Name';
+                  //         }
+                  //         return null;
+                  //       }, validatorr: null,
+                  //     ))
                 ],
-              ),*/
+              ),
               const SizedBox(height: 20),
-              /*Row(
+              Row(
                 children: [
                   Expanded(
                       child: CommonTextFormField(
-                    hintText: "Organization",
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'please enter Organization';
-                      }
-                      return null;
-                    },
-                    prefixIcon: Icon(
-                      Icons.cabin,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  )),
+                 controller: controller.lNameController,
+                        hintText: "Email",
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'please enter email';
+                          }
+                          return null;
+                        },
+                        prefixIcon: const Icon(
+                          Icons.cabin,
+                          color: Colors.deepPurpleAccent,
+                        ), validatorr: null,
+                      )),
                   const SizedBox(width: 10),
-                  Expanded(
-                      child: CommonTextFormField(
-                    hintText: "Organization",
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'please enter Organization';
-                      }
-                      return null;
-                    },
-                    prefixIcon: Icon(
-                      Icons.cabin,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  )),
+                  // Expanded(
+                  //     child: CommonTextFormField(
+                  //       hintText: "Organization",
+                  //       validator: (value) {
+                  //         if (value!.isEmpty) {
+                  //           return 'please enter Organization';
+                  //         }
+                  //         return null;
+                  //       },
+                  //       prefixIcon: Icon(
+                  //         Icons.cabin,
+                  //         color: Colors.deepPurpleAccent,
+                  //       ), validatorr: null,
+                  //     )),
                 ],
-              ),*/
+              ),
               const SizedBox(height: 20),
               SizedBox(
                 width: 340,
@@ -142,13 +144,14 @@ class AddDataScreen extends GetView<AddDataController> {
                         //   ),
                         //   duration: const Duration(milliseconds: 5000),
                         // )),
-                        DatabaseHandler()
-                            .add(DataModel(
+                        DatabaseHandler().addUser(UserModel(
                           id: controller.uidFunction().toInt(),
-                          firstName: controller.fNameController.text,
-                          lastName: controller.lNameController.text,
+                          name: controller.fNameController.text,
+                          email: controller.lNameController.text,
+                            online: controller.online.value.toString()
                         ))
                             .whenComplete(() {
+                              controller.online.value;
                           showDialog(
                             context: context,
                             builder: (context) {
@@ -173,7 +176,7 @@ class AddDataScreen extends GetView<AddDataController> {
                             //Get.offAndToNamed(HomeScreen.pageId);
                             Get.back();
                             Get.back();
-                            DatabaseHandler().retriveAllTask();
+                            DatabaseHandler().retriveAllUser();
                             //HomeController().getOffData();
                           });
 
@@ -190,10 +193,8 @@ class AddDataScreen extends GetView<AddDataController> {
                     else if (controller.myForm.currentState!.validate())
                       {
                         print("Update"),
-                        controller.data.value.firstName =
-                            controller.fNameController.text,
-                        controller.data.value.lastName =
-                            controller.lNameController.text,
+                        controller.userData.value.name = controller.fNameController.text,
+                        controller.userData.value.email = controller.lNameController.text,
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Row(
                             children: const <Widget>[
@@ -207,9 +208,9 @@ class AddDataScreen extends GetView<AddDataController> {
                           duration: const Duration(milliseconds: 5000),
                         )),
                         DatabaseHandler()
-                            .updateTask(controller.data.value)
+                            .updateUser(controller.userData.value)
                             .whenComplete(() {
-                          DatabaseHandler().retriveAllTask();
+                          DatabaseHandler().retriveAllUser();
                           Get.back();
                         })
                       },

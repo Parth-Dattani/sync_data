@@ -5,8 +5,8 @@ import 'api.dart';
 class RemoteServices {
   static var client = http.Client();
 
-
-  static const accessToken = "7b9e3b08-6c44-4b1f-acd4-959df8b36d1e";
+  //static const accessToken = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJTaW1wbGVUaXguQm94T2ZmaWNlVXNlcklkIjoiNTU3NjYiLCJTaW1wbGVUaXguVXNlck5hbWUiOiJyYWoucGF0ZWxAdGhlb25ldGVjaG5vbG9naWVzLmNvLmluIiwiU2ltcGxlVGl4LkZpcnN0TmFtZSI6IlJhaiIsImdpdmVuX25hbWUiOiJSYWoiLCJTaW1wbGVUaXguTGFzdE5hbWUiOiJQYXRlbCIsImZhbWlseV9uYW1lIjoiUGF0ZWwiLCJTaW1wbGVUaXguRW1haWwiOiJyYWoucGF0ZWxAdGhlb25ldGVjaG5vbG9naWVzLmNvLmluIiwiU2ltcGxlVGl4LlByb2ZpbGVQaWN0dXJlIjoiIiwiU2ltcGxlVGl4LlJvbGVJZCI6IjEiLCJTaW1wbGVUaXguUm9sZU5hbWUiOiIiLCJTaW1wbGVUaXguQXBwbGljYXRpb25JZCI6IjQ2ZTg5MjRhLWJiMWMtNGViZC05ZjRkLTIxNjkzZDk4NmExZSIsImp0aSI6IjI4MmZjNTY1LTc3MmQtNDUwNC05OWJjLTNkNDE1MzNmYTlhOSIsIm5iZiI6MTY3Njk1Njk5OCwiZXhwIjoxNjc3NTYxNzk4LCJpc3MiOiJJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.WQB7wnIB8FCuPFu4LTJDox_tjSE2-kLxHKlLVqxXE3rGfeRTekK-rYin9a_DDnJ-6nGYSyzJY_aCEWAarxETAQ";
+  static const accessToken = "a07d6550-9a6a-456c-8d5c-2a3bf7b9859a";
 
   static void printResponse(
       Map<String, String> header, dynamic body, http.Response response) {
@@ -30,7 +30,7 @@ class RemoteServices {
     http.Response response = await http.get(
       Uri.parse(Apis.dataAPI),
       headers: header,
-     // body: postBody,
+      // body: postBody,
     );
     printResponse(header, null, response);
     return response;
@@ -74,11 +74,31 @@ class RemoteServices {
     return response;
   }
 
+  static Future<http.Response> addUserData(
+      int id, String name, String email) async {
+    Map<String, String> header = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+    String postBody = json.encode({
+      "name": name,
+      "email": email,
+      "password": '123456',
+    });
+    http.Response response = await http.post(
+      Uri.parse(Apis.registerAPI),
+      headers: header,
+      body: postBody,
+    );
+    printResponse(header, postBody, response);
+    return response;
+  }
 
   static Future<http.Response> registerAPI(
       String userName,
       //String firstName, String lastName,
-      String email, String password
+      String email,
+      String password
       //, String phone
       ) async {
     Map<String, String> header = {
@@ -104,18 +124,16 @@ class RemoteServices {
     http.Response response = await http.post(
       Uri.parse("${Apis.registerAPI}"),
       headers: header,
-       body: postBody,
+      body: postBody,
     );
     printResponse(header, postBody, response);
     return response;
   }
 
-
-
-
-
-  static Future<Map<String, dynamic>> aggregateFitnessData(DateTime startDate, DateTime endDate) async {
-    final url = "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate";
+  static Future<Map<String, dynamic>> aggregateFitnessData(
+      DateTime startDate, DateTime endDate) async {
+    final url =
+        "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate";
 
     final response = await http.post(
       Uri.parse(url),
@@ -127,7 +145,8 @@ class RemoteServices {
         "aggregateBy": [
           {
             "dataTypeName": "com.google.step_count.delta",
-            "dataSourceId": "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
+            "dataSourceId":
+                "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
           },
         ],
         "bucketByTime": {"durationMillis": 86400000},
@@ -140,10 +159,10 @@ class RemoteServices {
       final responseData = jsonDecode(response.body);
       return responseData;
     } else {
-      throw Exception("Failed to aggregate fitness data: ${response.statusCode}");
+      throw Exception(
+          "Failed to aggregate fitness data: ${response.statusCode}");
     }
   }
-
 
 /*  static Future<void> readHeartRateData() async {
     //final credentials = await obtainAccessCredentialsViaGoogleSignIn();
@@ -169,7 +188,6 @@ class RemoteServices {
     print("heart beat :- ${heartRateData}");
   }*/
 
-
   static Future<http.Response> getData() async {
     Map<String, String> header = {
       'Content-Type': 'application/json',
@@ -185,16 +203,16 @@ class RemoteServices {
     return response;
   }
 
-  // static Future<http.Response> getCalData() async {
-  //   Map<String, String> header = {
-  //     'Content-Type': 'application/json; charset=UTF-8',
-  //     'Authorization': 'Bearer $accessToken',
-  //   };
-  //   http.Response response = await http.get(
-  //       //Uri.parse("https://www.google.com/calendar/events?eid=Nm9zMzBlMWg3NHM2NGJiNDZnc2owYjlrY2hqM2diOXA2NWgzY2I5bjZrbzZhYzFsNmdzamVwYjM2Y18xOTcwMDEwMVQwMDAwMDBaIG1heXVydGhlb25ldGVjaDFAbQ"),
-  //       Uri.parse("${Apis.baseAPI}${Apis.insertAPI}/$eventId"),
-  //       headers: header);
-  //   printResponse(header, null, response);
-  //   return response;
-  // }
+// static Future<http.Response> getCalData() async {
+//   Map<String, String> header = {
+//     'Content-Type': 'application/json; charset=UTF-8',
+//     'Authorization': 'Bearer $accessToken',
+//   };
+//   http.Response response = await http.get(
+//       //Uri.parse("https://www.google.com/calendar/events?eid=Nm9zMzBlMWg3NHM2NGJiNDZnc2owYjlrY2hqM2diOXA2NWgzY2I5bjZrbzZhYzFsNmdzamVwYjM2Y18xOTcwMDEwMVQwMDAwMDBaIG1heXVydGhlb25ldGVjaDFAbQ"),
+//       Uri.parse("${Apis.baseAPI}${Apis.insertAPI}/$eventId"),
+//       headers: header);
+//   printResponse(header, null, response);
+//   return response;
+// }
 }

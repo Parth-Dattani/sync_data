@@ -16,6 +16,7 @@ class AddDataController extends GetxController {
   Rx<DataModel> data = DataModel().obs;
   Rx<UserModel> userData = UserModel().obs;
   dynamic argumentData = Get.arguments;
+  RxInt online = 0.obs;
 
   @override
   void onInit() {
@@ -23,10 +24,10 @@ class AddDataController extends GetxController {
     if (isUpdate.value == true) {
       userData.value = Get.arguments['data'];
       fNameController.text = userData.value.name.defaultStringValue();
-      fNameController.text = userData.value.email.defaultStringValue();
+      lNameController.text = userData.value.email.defaultStringValue();
       //fNameController.text = data.value.firstName.defaultStringValue();
       //lNameController.text = data.value.lastName.defaultStringValue();
-      print("Show Data ${jsonEncode(data.value)}");
+      print("Show Data ${jsonEncode(userData.value)}");
     } else {
       print("ADD");
       uidFunction();
