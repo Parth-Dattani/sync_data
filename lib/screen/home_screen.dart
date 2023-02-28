@@ -6,6 +6,8 @@ import 'package:sync_data/Model/model_class.dart';
 import 'package:sync_data/Model/user_model.dart';
 import 'package:sync_data/controller/controller.dart';
 import 'package:sync_data/screen/add_data.dart';
+import 'package:sync_data/screen/login_screen.dart';
+import 'package:sync_data/screen/text_animation.dart';
 import 'package:sync_data/screen/user.dart';
 import 'dart:math';
 import '../Database/dbhelper.dart';
@@ -22,11 +24,14 @@ class HomeScreen extends GetView<HomeController> {
         title: const Text("Sync Data "),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         actions: [
+          IconButton(onPressed: (){
+            Get.toNamed(LoginScreen.pageId);
+          }, icon: const Icon(Icons.abc)),
           /*IconButton(
             onPressed: () {
               print("Data merge");
@@ -204,12 +209,20 @@ class HomeScreen extends GetView<HomeController> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            child: Image.network(
+                                              controller.uModel[index].profilepicture.toString(),
+                                              height: 60.0,
+                                              width: 60.0,
+                                              fit: BoxFit.fitWidth,
+                                            ),
+                                          ),
                                           const SizedBox(
                                             height: 2,
                                           ),
                                           Text(
-                                            controller.uModel[index].name
-                                                .toString(),
+                                            controller.uModel[index].name.toString(),
                                             style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w600),
@@ -218,8 +231,7 @@ class HomeScreen extends GetView<HomeController> {
                                             width: 10,
                                           ),
                                           Text(
-                                            controller.uModel[index].email
-                                                .toString(),
+                                            controller.uModel[index].email.toString(),
                                             style: const TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w600),

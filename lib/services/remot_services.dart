@@ -130,40 +130,6 @@ class RemoteServices {
     return response;
   }
 
-  static Future<Map<String, dynamic>> aggregateFitnessData(
-      DateTime startDate, DateTime endDate) async {
-    final url =
-        "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate";
-
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer $accessToken',
-      },
-      body: jsonEncode({
-        "aggregateBy": [
-          {
-            "dataTypeName": "com.google.step_count.delta",
-            "dataSourceId":
-                "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
-          },
-        ],
-        "bucketByTime": {"durationMillis": 86400000},
-        "startTimeMillis": startDate.millisecondsSinceEpoch,
-        "endTimeMillis": endDate.millisecondsSinceEpoch,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
-      return responseData;
-    } else {
-      throw Exception(
-          "Failed to aggregate fitness data: ${response.statusCode}");
-    }
-  }
-
 /*  static Future<void> readHeartRateData() async {
     //final credentials = await obtainAccessCredentialsViaGoogleSignIn();
     final httpClient = http.Client();
@@ -187,21 +153,6 @@ class RemoteServices {
     }
     print("heart beat :- ${heartRateData}");
   }*/
-
-  static Future<http.Response> getData() async {
-    Map<String, String> header = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $accessToken',
-      '-content-encoding': 'gzip',
-    };
-
-    http.Response response = await http.get(
-      Uri.parse("${Apis.baseAPI}"),
-      headers: header,
-    );
-    printResponse(header, null, response);
-    return response;
-  }
 
 // static Future<http.Response> getCalData() async {
 //   Map<String, String> header = {

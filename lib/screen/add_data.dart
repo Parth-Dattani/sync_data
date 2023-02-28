@@ -10,6 +10,8 @@ import 'home_screen.dart';
 class AddDataScreen extends GetView<AddDataController> {
   static const pageId = '/AddDataScreen';
 
+  const AddDataScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,6 +150,7 @@ class AddDataScreen extends GetView<AddDataController> {
                           id: controller.uidFunction().toInt(),
                           name: controller.fNameController.text,
                           email: controller.lNameController.text,
+                            profilepicture: "https://img.freepik.com/premium-vector/male-profile-flat-blue-simple-icon-with-long-shadowxa_159242-10092.jpg",
                             online: controller.online.value.toString()
                         ))
                             .whenComplete(() {
